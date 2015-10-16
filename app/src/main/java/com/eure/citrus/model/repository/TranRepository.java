@@ -2,7 +2,17 @@ package com.eure.citrus.model.repository;
 
 import android.support.annotation.NonNull;
 
-import com.eure.citrus.model.entity.Task;
+import com.eure.citrus.model.entity.Tran;
+import com.nifty.cloud.mb.FindCallback;
+import com.nifty.cloud.mb.NCMBException;
+import com.nifty.cloud.mb.NCMBObject;
+import com.nifty.cloud.mb.NCMBQuery;
+import com.nifty.cloud.mb.NCMB;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -13,32 +23,56 @@ import io.realm.RealmResults;
 public class TranRepository {
 
     /**
+     * An array of TranData items.
+     */
+    public static List<Tran> ITEMS = new ArrayList<Tran>();
+
+    /**
+     * A map of TranData items, by ID.
+     */
+    public static Map<String, Tran> ITEM_MAP = new HashMap<String, Tran>();
+
+    /**
      *
-     * @param realm
+     * @param query
      * @param name
      * @param groupName
-     * @return
+     * @return Tran
      */
-    public static Task create(@NonNull Realm realm, @NonNull String name, String groupName) {
-        realm.beginTransaction();
-        Task task = realm.createObject(Task.class);
-        task.setName(name);
+    public static Tran create(@NonNull Tran tran) {
+        NCMBObject obj = new NCMBObject("TestClass");
+
+        tran.message = name;
         if (groupName != null) {
-            task.setGroupName(groupName);
+            tran.Remarks = groupName;
         }
-        realm.commitTransaction();
-        return task;
+        obj.add("message", tran.message);
+        obj.add("Remarks", tran.Remarks);
+
+        try {
+            obj.save();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return tran;
     }
 
     /**
      *
-     * @param realm
-     * @param task
+     * @param query
+     * @param tran
      */
-    public static void delete(@NonNull Realm realm, Task task) {
-        realm.beginTransaction();
-        task.removeFromRealm();
-        realm.commitTransaction();
+    public static void delete(@NonNull NCMBQuery<NCMBObject> query, Tran tran) {
+        List<NCMBObject> result;
+        query.whereEqualTo("objectId", tran.objectId);
+        try {
+            result = query.find();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        query.task.removeFromRealm();
+        //realm.commitTransaction();
     }
 
     /**
@@ -48,7 +82,7 @@ public class TranRepository {
      * @param completed
      * @return
      */
-    public static Task updateByCompleted(@NonNull Realm realm, Task task, boolean completed) {
+    public static Task updateByCompleted(@NonNull NCMBQuery<NCMBObject> query, Task task, boolean completed) {
         realm.beginTransaction();
         task.setCompleted(completed);
         realm.commitTransaction();
@@ -60,7 +94,7 @@ public class TranRepository {
      * @param realm
      * @return
      */
-    public static long count(@NonNull Realm realm) {
+    public static long count(@NonNull NCMBQuery<NCMBObject> query) {
         return realm.where(Task.class)
                 .count();
     }
@@ -71,7 +105,7 @@ public class TranRepository {
      * @param completed
      * @return
      */
-    public static long countByCompleted(@NonNull Realm realm, boolean completed) {
+    public static long countByCompleted(@NonNull NCMBQuery<NCMBObject> query, boolean completed) {
         return realm.where(Task.class)
                 .equalTo("completed", completed)
                 .count();
@@ -82,7 +116,7 @@ public class TranRepository {
      * @param realm
      * @return
      */
-    public static RealmResults<Task> findAll(@NonNull Realm realm) {
+    public static RealmResults<Task> findAll(@NonNull NCMBQuery<NCMBObject> query) {
         return realm.where(Task.class)
                 .findAll();
     }
@@ -93,7 +127,32 @@ public class TranRepository {
      * @param completed
      * @return
      */
-    public static RealmResults<Task> findAllByCompleted(@NonNull Realm realm, boolean completed) {
+    public static List<Tran> findAllByCompleted(@NonNull NCMBQuery<NCMBObject> query, boolean completed) {
+
+        //query.whereEqualTo("message", "Hello, NCMB!");
+        query.findInBackground(new FindCallback<NCMBObject>() {
+            @Override
+            public void done(List<NCMBObject> result, NCMBException e) {
+                if (result != null) {
+                    clrItem();
+                    if (!result.isEmpty()) {
+                        for (int i = 0; i < result.size(); i++) {
+                            addItem(new TranItem(result.get(i)));
+                        }
+                    } else {
+                        addItem(new TranItem(new NCMBObject("No Item.")));
+                    }
+                } else {    /* result == null */
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+
+
+
         return realm.where(Task.class)
                 .equalTo("completed", completed)
                 .findAll();
@@ -105,7 +164,7 @@ public class TranRepository {
      * @param groupName
      * @return
      */
-    public static RealmResults<Task> findAllByGroupName(@NonNull Realm realm,
+    public static RealmResults<Task> findAllByGroupName(@NonNull NCMBQuery<NCMBObject> query,
             String groupName) {
         return realm.where(Task.class)
                 .equalTo("groupName", groupName)

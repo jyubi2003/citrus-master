@@ -11,6 +11,7 @@
     <string name="create_new">Create New</string>
     <string name="create_new_description">Stack the to-do list to me.</string>
     <string name="task_name">Task name</string>
+    <string name="tran_name">Tran name</string>
     <string name="create">Create</string>
     <string name="create_successfully">You have created %1$s successfully.</string>
     <string name="complete_task">You have completed %1$s.</string>

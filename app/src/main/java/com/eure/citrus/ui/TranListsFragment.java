@@ -17,10 +17,16 @@ import com.eure.citrus.listener.OnRecyclerItemClickListener;
 import com.eure.citrus.model.entity.Task;
 import com.eure.citrus.model.entity.Tran;
 import com.eure.citrus.model.repository.TaskRepository;
+import com.eure.citrus.model.repository.TranRepository;
 import com.eure.citrus.ui.adapter.ListsTaskListAdapter;
 import com.eure.citrus.ui.adapter.ListsTranListAdapter;
 import com.eure.citrus.ui.widget.DividerItemDecoration;
+import com.nifty.cloud.mb.FindCallback;
+import com.nifty.cloud.mb.NCMBException;
 import com.nifty.cloud.mb.NCMBObject;
+import com.nifty.cloud.mb.NCMBQuery;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -54,15 +60,14 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
 
     // Realm instance for the UI thread
     private Realm mUIThreadRealm;
-    private NCMBObject mUIThreadNCMB;
+    private NCMBQuery<NCMBObject> mUIThreadNCMB;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         mUIThreadRealm = Realm.getDefaultInstance();
-        mUIThreadNCMB =
-
+        mUIThreadNCMB =  NCMBQuery.getQuery("TestClass");
     }
 
 
@@ -90,6 +95,34 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
         if (getArguments() != null) {
             String groupName = getArguments().getString(KEY_GROUP_NAME);
             tasks = TaskRepository.findAllByGroupName(mUIThreadRealm, groupName);
+        } else {
+            tasks = TaskRepository.findAll(mUIThreadRealm);
+            showGroupName = true;
+        }
+
+        mListsTranListAdapter = new ListsTranListAdapter(getActivity(), tasks, this, showGroupName);
+
+        RecyclerView recyclerView = findById(view, R.id.lists_recycler_view);
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(Utils.getDrawableResource(getActivity(), R.drawable.line)));
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mListsTranListAdapter);
+    }
+
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        List<Tran> trans = null;
+        boolean showGroupName = false;
+
+        if (getArguments() != null) {
+            String groupName = getArguments().getString(KEY_GROUP_NAME);
+            trans = TranRepository.findAllByGroupName(mUIThreadNCMB, groupName);
         } else {
             tasks = TaskRepository.findAll(mUIThreadRealm);
             showGroupName = true;

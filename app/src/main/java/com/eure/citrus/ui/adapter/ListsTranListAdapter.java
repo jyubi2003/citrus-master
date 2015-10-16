@@ -72,19 +72,17 @@ public class ListsTranListAdapter extends RecyclerView.Adapter<ListsTranListAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Task task = mTasks.get(position);
-        holder.taskNameText.setChecked(task.isCompleted());
-        holder.taskNameText.setText(task.getName());
-        changeTaskNameState(holder.itemView, holder.taskNameText, task.isCompleted(), mContext.getResources());
-        holder.taskGroupText.setText(task.getGroupName());
+        holder.tranNameText.setChecked(task.isCompleted());
+        holder.tranNameText.setText(task.getName());
+        changeTaskNameState(holder.itemView, holder.tranNameText, task.isCompleted(), mContext.getResources());
+        holder.tranGroupText.setText(task.getGroupName());
     }
 
-    public Task getItem(int position) {
-        return mTasks.get(position);
-    }
+    public Tran getItem(int position) { return mTrans.get(position); }
 
     @Override
     public int getItemCount() {
-        return mTasks.size();
+        return mTrans.size();
     }
 
     /**
@@ -108,18 +106,18 @@ public class ListsTranListAdapter extends RecyclerView.Adapter<ListsTranListAdap
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @Bind(R.id.lists_task_name)
-        AppCompatCheckedTextView taskNameText;
+        @Bind(R.id.lists_tran_name)
+        AppCompatCheckedTextView tranNameText;
 
-        @Bind(R.id.lists_task_group)
-        AppCompatTextView taskGroupText;
+        @Bind(R.id.lists_tran_group)
+        AppCompatTextView tranGroupText;
 
         public ViewHolder(View v) {
             super(v);
             v.setOnClickListener(this);
             ButterKnife.bind(this, v);
             if (!sShowGroupName) {
-                taskGroupText.setVisibility(View.GONE);
+                tranGroupText.setVisibility(View.GONE);
             }
         }
 

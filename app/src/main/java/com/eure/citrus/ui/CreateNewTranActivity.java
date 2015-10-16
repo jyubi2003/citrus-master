@@ -38,16 +38,16 @@ public class CreateNewTranActivity extends AppCompatActivity {
 
     private static final String KEY_GROUP_NAME = "key_group_name";
 
-    @Bind(R.id.create_task_coordinator_layout)
+    @Bind(R.id.create_tran_coordinator_layout)
     CoordinatorLayout mCoordinatorLayout;
 
-    @Bind(R.id.create_task_text_input_layout)
+    @Bind(R.id.create_tran_text_input_layout)
     TextInputLayout mTextInputLayout;
 
-    @Bind(R.id.create_task_edit_text)
+    @Bind(R.id.create_tran_edit_text)
     AppCompatEditText mTaskNameEditText;
 
-    @Bind(R.id.create_task_button)
+    @Bind(R.id.create_tran_button)
     BottomButton mCreateTaskButton;
 
     // If true, it call setResult(RESULT_OK) before finish.

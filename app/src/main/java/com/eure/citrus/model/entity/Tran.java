@@ -10,7 +10,8 @@ import android.text.Html;
 /**
  * A data item representing a piece of content.
  */
-public class Tran {
+public class Tran extends NCMBObject {
+
     public String objectId;
     public Date TranDateTime;
     public String CreditAccount;
@@ -26,11 +27,13 @@ public class Tran {
     public Date updateDate;
     public String acl;
 
-
-    public Tran() {
+    public Tran(String classname) {
+        super(classname);
     }
 
     public Tran(NCMBObject content) {
+        super(content.getClassName());
+
         this.objectId = content.getString("objectId");
         this.TranDateTime = content.getDate("TranDateTime");
         this.CreditAccount = content.getString("CreditAccount");
