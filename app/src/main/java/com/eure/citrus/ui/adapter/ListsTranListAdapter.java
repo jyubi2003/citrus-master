@@ -1,92 +1,134 @@
-package com.dennou_lab.fragment1.data;
+package com.eure.citrus.ui.adapter;
 
 import android.content.Context;
-import android.text.Html;
+import android.content.res.Resources;
+import android.support.v7.widget.AppCompatCheckedTextView;
+import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import com.dennou_lab.fragment1.MainActivity;
-import com.nifty.cloud.mb.FindCallback;
-import com.nifty.cloud.mb.NCMB;
-import com.nifty.cloud.mb.NCMBException;
-import com.nifty.cloud.mb.NCMBObject;
-import com.nifty.cloud.mb.NCMBQuery;
+import com.eure.citrus.R;
+import com.eure.citrus.listener.OnRecyclerItemClickListener;
+import com.eure.citrus.model.entity.Task;
+import com.eure.citrus.model.entity.Tran;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import io.realm.RealmResults;
 
 /**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- * <p/>
- * TODO: Replace all uses of this class before publishing your app.
+ * Created by katsuyagoto on 15/06/18.
  */
-public class TranListData extends ArrayAdapter<TranContent.TranItem> {
+public class ListsTranListAdapter extends RecyclerView.Adapter<ListsTranListAdapter.ViewHolder> {
 
-    /**
-     * A DataSource TranContent.
-     */
-    public static TranContent tranContent;
+    private Context mContext;
 
-    /**
-     * LayoutInflater Object to Create View..
-     */
-    private LayoutInflater layoutInflater_;
+    private RealmResults<Task> mTasks;
+    private List<Tran> mTrans;
 
-    /**
-     * constructor
-     */
-    public TranListData(Context context, int textViewResourceId, List<TranContent.TranItem> objects){
-        super(context, textViewResourceId, objects);
+    private static boolean sShowGroupName = true;
 
-        // Adapter へのデータクラスの登録（でもArrayAdapter向けにはList<TranContent.TranItem> objectsが渡っているんですけどね）
-        MainActivity mainActivity = (MainActivity)context;
-        tranContent = mainActivity.getTranContent();
+    private static OnRecyclerItemClickListener sOnRecyclerItemClickListener;
 
-        // convertView用に使うインフレーターを生成しておく
-        layoutInflater_ = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public ListsTranListAdapter(Context context, RealmResults<Task> tasks,
+                                OnRecyclerItemClickListener onRecyclerItemClickListener, boolean showGroupName) {
+        super();
+        mContext = context;
+        mTasks = tasks;
+        sOnRecyclerItemClickListener = onRecyclerItemClickListener;
+        sShowGroupName = showGroupName;
     }
 
-    /**
-     * 取引データの読み込みを指示
-     */
-    public void SetupContent(){
-        tranContent.ReadContent(getContext());
+    public ListsTranListAdapter(Context context, List<Tran> trans,
+                                OnRecyclerItemClickListener onRecyclerItemClickListener, boolean showGroupName) {
+        super();
+        mContext = context;
+        mTrans = trans;
+        sOnRecyclerItemClickListener = onRecyclerItemClickListener;
+        sShowGroupName = showGroupName;
     }
 
-    /**
-     * 画面へのデータの登録（なんでgetViewなのかね）
-     */
+    public void setData(RealmResults<Task> tasks) {
+        this.mTasks = tasks;
+    }
+
+    public void setData(List<Tran> trans) {
+
+        this.mTrans = trans;
+    }
+
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // 特定の行(position)のデータを得る
-        TranContent.TranItem item = (TranContent.TranItem)tranContent.getItem(position);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(mContext).inflate(R.layout.item_lists_task_list, parent, false);
+        ViewHolder viewHolder = new ViewHolder(v);
+        return viewHolder;
+    }
 
-        // convertViewは使い回しされている可能性があるのでnullの時だけ新しく作る
-        if (null == convertView) {
-            convertView = layoutInflater_.inflate(android.R.layout.simple_list_item_1, null);
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Task task = mTasks.get(position);
+        holder.taskNameText.setChecked(task.isCompleted());
+        holder.taskNameText.setText(task.getName());
+        changeTaskNameState(holder.itemView, holder.taskNameText, task.isCompleted(), mContext.getResources());
+        holder.taskGroupText.setText(task.getGroupName());
+    }
+
+    public Task getItem(int position) {
+        return mTasks.get(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mTasks.size();
+    }
+
+    /**
+     * Change background color, text color
+     */
+    public void changeTaskNameState(View view, AppCompatCheckedTextView taskNameText, boolean completed,
+            Resources resources) {
+        taskNameText.setChecked(completed);
+        if (completed) {
+            view.setBackgroundColor(resources.getColor(R.color.mt_gray5));
+            taskNameText.setTextColor(resources.getColor(R.color.mt_gray6));
+        } else {
+            view.setBackgroundColor(resources.getColor(android.R.color.white));
+            taskNameText.setTextColor(resources.getColor(R.color.mt_black));
+        }
+    }
+
+    public void release() {
+        sOnRecyclerItemClickListener = null;
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @Bind(R.id.lists_task_name)
+        AppCompatCheckedTextView taskNameText;
+
+        @Bind(R.id.lists_task_group)
+        AppCompatTextView taskGroupText;
+
+        public ViewHolder(View v) {
+            super(v);
+            v.setOnClickListener(this);
+            ButterKnife.bind(this, v);
+            if (!sShowGroupName) {
+                taskGroupText.setVisibility(View.GONE);
+            }
         }
 
-        // TranContentのデータをViewのWidgetにセットする
-        /*
-        ImageView imageView;
-        imageView = (ImageView)convertView.findViewById(R.id.image);
-        imageView.setImageBitmap(item.getImageData());
-        */
-
-        TextView textView;
-        textView = (TextView)convertView.findViewById(android.R.id.text1);
-        textView.setText(item.toCharSequence());
-
-        return convertView;
+        @Override
+        public void onClick(View view) {
+            int position = this.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                sOnRecyclerItemClickListener.onClickRecyclerItem(view, position);
+            }
+        }
     }
-
 }

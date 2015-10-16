@@ -112,6 +112,16 @@ public class MainActivity extends AppCompatActivity implements OnMakeSnackbar {
                 mFloatingActionButton.setVisibility(View.GONE);
                 replaceMainFragment(mListsFragment);
                 break;
+            case R.id.tran_lists:
+                if (actionBar != null) {
+                    actionBar.setTitle(R.string.tran_lists);
+                }
+                if (mListsFragment == null) {
+                    mListsFragment = ListsFragment.newInstance();
+                }
+                mFloatingActionButton.setVisibility(View.GONE);
+                replaceMainFragment(mListsFragment);
+                break;
             case R.id.profile:
                 if (actionBar != null) {
                     actionBar.setTitle(R.string.profile);

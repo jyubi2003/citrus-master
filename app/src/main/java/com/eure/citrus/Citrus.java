@@ -1,6 +1,7 @@
 package com.eure.citrus;
 
 import com.eure.citrus.model.repository.GroupRepository;
+import com.nifty.cloud.mb.NCMB;
 import com.squareup.leakcanary.LeakCanary;
 
 import android.app.Application;
@@ -20,6 +21,7 @@ public class Citrus extends Application {
         LeakCanary.install(this);
         initRealm();
         initCalligraphy();
+        initNCMB();
     }
 
 
@@ -42,6 +44,12 @@ public class Citrus extends Application {
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
+    }
+
+    private void initNCMB() {
+        NCMB.initialize(getApplicationContext(),
+                "2d2329a32f2b834527eb0d2a301032f2a27df4dd6814f95cb7e966a6f832020c",
+                "cbf48ac77f3edfff2319c4185d7def9e11aa62d38b6bd5c38570d114bf25afb9");
     }
 
 }

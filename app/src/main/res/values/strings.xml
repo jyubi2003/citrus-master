@@ -3,6 +3,7 @@
     <string name="home">Home</string>
     <string name="groups">Groups</string>
     <string name="lists">Lists</string>
+    <string name="tran_lists">Trans Lists</string>
     <string name="profile">Profile</string>
     <string name="setting">Setting</string>
     <string name="eureka">eureka</string>

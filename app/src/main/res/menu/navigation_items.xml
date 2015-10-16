@@ -17,6 +17,10 @@
                 android:icon="@drawable/lists"
                 android:title="@string/lists"/>
         <item
+                android:id="@+id/tran_lists"
+                android:icon="@drawable/lists"
+                android:title="@string/tran_lists"/>
+        <item
                 android:id="@+id/profile"
                 android:icon="@drawable/profile"
                 android:title="@string/profile"/>

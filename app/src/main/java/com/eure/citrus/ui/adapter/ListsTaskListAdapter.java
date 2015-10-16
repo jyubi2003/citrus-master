@@ -3,6 +3,8 @@ package com.eure.citrus.ui.adapter;
 import com.eure.citrus.R;
 import com.eure.citrus.listener.OnRecyclerItemClickListener;
 import com.eure.citrus.model.entity.Task;
+import com.eure.citrus.model.entity.Tran;
+import com.nifty.cloud.mb.NCMBObject;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -12,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
