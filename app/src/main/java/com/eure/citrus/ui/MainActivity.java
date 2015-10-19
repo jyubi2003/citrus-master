@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements OnMakeSnackbar {
 
     private ListsFragment mListsFragment;
 
+    private TranListsFragment mTranListsFragment;
+
     private ProfileFragment mProfileFragment;
 
     @Override
@@ -116,11 +118,11 @@ public class MainActivity extends AppCompatActivity implements OnMakeSnackbar {
                 if (actionBar != null) {
                     actionBar.setTitle(R.string.tran_lists);
                 }
-                if (mListsFragment == null) {
-                    mListsFragment = ListsFragment.newInstance();
+                if (mTranListsFragment == null) {
+                    mTranListsFragment = TranListsFragment.newInstance();
                 }
                 mFloatingActionButton.setVisibility(View.GONE);
-                replaceMainFragment(mListsFragment);
+                replaceMainFragment(mTranListsFragment);
                 break;
             case R.id.profile:
                 if (actionBar != null) {

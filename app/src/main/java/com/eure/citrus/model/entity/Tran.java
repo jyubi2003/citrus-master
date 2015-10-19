@@ -1,11 +1,14 @@
 package com.eure.citrus.model.entity;
 
+import com.nifty.cloud.mb.FindCallback;
 import com.nifty.cloud.mb.NCMBObject;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.Date;
 import android.text.Html;
+
+import static java.lang.String.*;
 
 /**
  * A data item representing a piece of content.
@@ -14,6 +17,7 @@ public class Tran extends NCMBObject {
 
     public String objectId;
     public Date TranDateTime;
+    public String TranClass;
     public String CreditAccount;
     public String DebitAccount;
     public String Application;
@@ -27,32 +31,46 @@ public class Tran extends NCMBObject {
     public Date updateDate;
     public String acl;
 
+    /**
+     * public Tran()
+     * @param classname Path the classname
+     * @return Tran
+     * description Default Constructor
+     */
     public Tran(String classname) {
         super(classname);
     }
 
-    public Tran(NCMBObject content) {
-        super(content.getClassName());
+    /**
+     * public Tran(NCMBObject content)
+     * @param aTran Path a Tran object.
+     * @return Tran
+     * description Copy Constructor
+     */
+    public Tran(Tran aTran) {
+        super(aTran.getClassName());
 
-        this.objectId = content.getString("objectId");
-        this.TranDateTime = content.getDate("TranDateTime");
-        this.CreditAccount = content.getString("CreditAccount");
-        this.DebitAccount = content.getString("DebitAccount");
-        this.Application = content.getString("Application");
-        this.Customer = content.getString("Customer");
-        this.Amount = new BigDecimal(content.getString("Amount"));
-        this.Unit = content.getString("Unit");
-        this.Tax = content.getString("Tax");
-        this.Remarks = content.getString("Remarks");
-        this.message = content.getString("message");
-        this.createDate = content.getDate("createDate");
-        this.updateDate = content.getDate("updateDate");
-        this.acl = content.getString("acl");
+        add("objectId", aTran.objectId);
+        add("TranDateTime", aTran.TranDateTime);
+        add("TranClass", aTran.TranClass);
+        add("CreditAccount", aTran.CreditAccount);
+        add("DebitAccount", aTran.DebitAccount);
+        add("Application", aTran.Application);
+        add("Customer", aTran.Customer);
+        add("Amount" , aTran.Amount);
+        add("Unit", aTran.Unit);
+        add("Tax", aTran.Tax);
+        add("Remarks", aTran.Remarks);
+        add("message", aTran.message);
+        add("createDate", aTran.createDate);
+        add("updateDate", aTran.updateDate);
+        add("acl", aTran.acl);
     }
 
     /**
      * public String toString()
-     * description インスタンスの内容を文字列で返す
+     * @return String
+     * description Return the object by String.
      */
     @Override
     public String toString() {
@@ -64,20 +82,26 @@ public class Tran extends NCMBObject {
 
     /**
      * public CharSequence toCaarSequence()
-     * description HTML タグ付き文字列の作成
+     * @return CharSequence
+     * description Return the object by HTML String.
      */
     public CharSequence toCharSequence() {
         //
         String html = "<p><font color=#000000>" + DateFormat.getDateInstance().format(TranDateTime) + "<small>JST</small> </font> " +
+                "<font color=#000000>" + TranClass + " </font>" +
                 "<font color=#000000>" + CreditAccount + " </font>" +
                 "<font color=#000000>" + DebitAccount + " </font>" +
                 "<font color=#000000>&yen;" + Amount.toString() + "円 </font>" +
-                "<font color=#000000>税 &yen;" + Tax.toString() + "円 </font><br>" +
+                "<font color=#000000>税 &yen;" + Tax + "円 </font><br>" +
                 "<font color=#000000>" + Application + " </font>" +
                 "<font color=#000000>" + Customer + "様 </font><br></p>";
         // fromHtml() の引数にタグ付き文字列を渡す
         // CharSequence source = Html.fromHtml(html);
         CharSequence source = Html.fromHtml(html);
         return source;
+    }
+
+    public void saveInBackground(FindCallback<NCMBObject> findCallback) {
+
     }
 }

@@ -7,18 +7,19 @@ import com.nifty.cloud.mb.FindCallback;
 import com.nifty.cloud.mb.NCMBException;
 import com.nifty.cloud.mb.NCMBObject;
 import com.nifty.cloud.mb.NCMBQuery;
-import com.nifty.cloud.mb.NCMB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.realm.Realm;
+import com.eure.citrus.model.entity.Tran;
+import com.nifty.cloud.mb.SaveCallback;
+
 import io.realm.RealmResults;
 
 /**
- * Created by katsuyagoto on 15/06/25.
+ * Created by hiroshiyoshida on 15/10/19.
  */
 public class TranRepository {
 
@@ -33,24 +34,21 @@ public class TranRepository {
     public static Map<String, Tran> ITEM_MAP = new HashMap<String, Tran>();
 
     /**
-     *
-     * @param query
-     * @param name
-     * @param groupName
+     * constructor
+     */
+    public  TranRepository() {
+        ITEMS.clear();
+        ITEM_MAP.clear();
+    }
+
+    /**
+     * create()
      * @return Tran
      */
-    public static Tran create(@NonNull Tran tran) {
-        NCMBObject obj = new NCMBObject("TestClass");
-
-        tran.message = name;
-        if (groupName != null) {
-            tran.Remarks = groupName;
-        }
-        obj.add("message", tran.message);
-        obj.add("Remarks", tran.Remarks);
-
+    public static Tran create() {
+        Tran tran = new Tran("TestCass");
         try {
-            obj.save();
+            tran.save();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -58,116 +56,136 @@ public class TranRepository {
     }
 
     /**
-     *
-     * @param query
-     * @param tran
+     * create()
+     * @param aTran Tran object to save.
+     * @return Tran saved
      */
-    public static void delete(@NonNull NCMBQuery<NCMBObject> query, Tran tran) {
-        List<NCMBObject> result;
-        query.whereEqualTo("objectId", tran.objectId);
+    public static Tran create(@NonNull Tran aTran) {
+        Tran tran = new Tran(aTran);
         try {
-            result = query.find();
-        } catch(Exception e){
+            tran.save();
+        } catch (Exception e){
             e.printStackTrace();
         }
+        return tran;
+    }
 
-        query.task.removeFromRealm();
-        //realm.commitTransaction();
+    /**
+     * delete()
+     * @param aTran Tran object to delete.
+     */
+    public static void delete(Tran aTran) {
+        try {
+            aTran.delete();
+            // 成功したSnackBarとか出したいです。;
+        } catch(Exception e){
+            // 失敗したSnackBarとか出したいです。;
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * update()
+     * @param aTran Tran to update.
+     */
+    public static void update(@NonNull Tran aTran) {
+        aTran.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(NCMBException e) {
+                if (e == null) {
+                    // 成功したSnackBarとか出したいです。
+                } else {
+                    // 失敗したSnackBarとか出したいです。
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * count()
+     * @param query Query for count number of items.
+     * @return count
+     */
+    public static int count(@NonNull NCMBQuery<NCMBObject> query) {
+        int count = 0;
+        try {
+            count = query.count();
+            // ここはSnackBar要らない。
+        } catch(Exception e){
+            // 失敗したSnackBarとか出したいです。
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    /**
+     * countByTranClass()
+     * @param query Query for count of items.
+     * @param aTranClass Transaction class
+     * @return count
+     */
+    public static long countByTranClass(@NonNull NCMBQuery<NCMBObject> query, String aTranClass) {
+        int count = 0;
+        query.whereEqualTo("TranClass", aTranClass);
+        try {
+            count = query.count();
+            // ここはSnackBar要らない。
+        } catch(Exception e){
+            // 失敗したSnackBarとか出したいです。
+            e.printStackTrace();
+        }
+        return count;
     }
 
     /**
      *
-     * @param realm
-     * @param task
-     * @param completed
-     * @return
+     * @param query Query for count of all items.
+     * @return ITEMS
      */
-    public static Task updateByCompleted(@NonNull NCMBQuery<NCMBObject> query, Task task, boolean completed) {
-        realm.beginTransaction();
-        task.setCompleted(completed);
-        realm.commitTransaction();
-        return task;
+    public static List<Tran> findAll(@NonNull NCMBQuery<NCMBObject> query) {
+        List<NCMBObject> tmpList;
+        ITEMS.clear();
+        try {
+            tmpList = query.find();
+            for (NCMBObject obj: tmpList) {
+                ITEMS.add(new Tran((Tran)obj));
+            };
+        } catch(Exception e){
+            // 失敗したSnackBarとか出したいです。
+            e.printStackTrace();
+        }
+        return ITEMS;
     }
 
     /**
      *
-     * @param realm
-     * @return
+     * @param query Query for find.
+     * @param aTranClass Transaction Class for Query.
+     * @return ITEMS
      */
-    public static long count(@NonNull NCMBQuery<NCMBObject> query) {
-        return realm.where(Task.class)
-                .count();
-    }
-
-    /**
-     *
-     * @param realm
-     * @param completed
-     * @return
-     */
-    public static long countByCompleted(@NonNull NCMBQuery<NCMBObject> query, boolean completed) {
-        return realm.where(Task.class)
-                .equalTo("completed", completed)
-                .count();
-    }
-
-    /**
-     *
-     * @param realm
-     * @return
-     */
-    public static RealmResults<Task> findAll(@NonNull NCMBQuery<NCMBObject> query) {
-        return realm.where(Task.class)
-                .findAll();
-    }
-
-    /**
-     *
-     * @param realm
-     * @param completed
-     * @return
-     */
-    public static List<Tran> findAllByCompleted(@NonNull NCMBQuery<NCMBObject> query, boolean completed) {
-
-        //query.whereEqualTo("message", "Hello, NCMB!");
+    public static List<Tran> findAllByTranClass(@NonNull NCMBQuery<NCMBObject> query, String aTranClass) {
         query.findInBackground(new FindCallback<NCMBObject>() {
             @Override
             public void done(List<NCMBObject> result, NCMBException e) {
                 if (result != null) {
-                    clrItem();
+                    ITEMS.clear();
                     if (!result.isEmpty()) {
-                        for (int i = 0; i < result.size(); i++) {
-                            addItem(new TranItem(result.get(i)));
-                        }
+                        for (NCMBObject obj: result) {
+                            ITEMS.add(new Tran((Tran)obj));
+                        };
                     } else {
-                        addItem(new TranItem(new NCMBObject("No Item.")));
+                        // このクラスのデータがないSnackBarとか出したいです。
+                        ;
                     }
                 } else {    /* result == null */
+                    // 失敗したSnackBarとか出したいです。
                     e.printStackTrace();
                 }
             }
         });
 
-
-
-
-
-
-        return realm.where(Task.class)
-                .equalTo("completed", completed)
-                .findAll();
+        return ITEMS;
     }
 
-    /**
-     *
-     * @param realm
-     * @param groupName
-     * @return
-     */
-    public static RealmResults<Task> findAllByGroupName(@NonNull NCMBQuery<NCMBObject> query,
-            String groupName) {
-        return realm.where(Task.class)
-                .equalTo("groupName", groupName)
-                .findAll();
-    }
 }

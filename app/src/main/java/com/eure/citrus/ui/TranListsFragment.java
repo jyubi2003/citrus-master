@@ -58,15 +58,13 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
 
     private ListsTranListAdapter mListsTranListAdapter;
 
-    // Realm instance for the UI thread
-    private Realm mUIThreadRealm;
+    // NCMBQuery instance for the UI thread
     private NCMBQuery<NCMBObject> mUIThreadNCMB;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mUIThreadRealm = Realm.getDefaultInstance();
         mUIThreadNCMB =  NCMBQuery.getQuery("TestClass");
     }
 
@@ -78,41 +76,6 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
         return view;
     }
 
-    public void refreshListByGroupName(String groupName) {
-        RealmResults<Task> tasks = TaskRepository.findAllByGroupName(mUIThreadRealm, groupName);
-        List<Tran> trans = TranRepository.findAllByGroupName(mUIThreadNCMB, groupName);
-        mListsTranListAdapter.setData(tasks);
-        mListsTranListAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onViewCreated(final View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        RealmResults<Task> tasks = null;
-        boolean showGroupName = false;
-
-        if (getArguments() != null) {
-            String groupName = getArguments().getString(KEY_GROUP_NAME);
-            tasks = TaskRepository.findAllByGroupName(mUIThreadRealm, groupName);
-        } else {
-            tasks = TaskRepository.findAll(mUIThreadRealm);
-            showGroupName = true;
-        }
-
-        mListsTranListAdapter = new ListsTranListAdapter(getActivity(), tasks, this, showGroupName);
-
-        RecyclerView recyclerView = findById(view, R.id.lists_recycler_view);
-        recyclerView.addItemDecoration(
-                new DividerItemDecoration(Utils.getDrawableResource(getActivity(), R.drawable.line)));
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mListsTranListAdapter);
-    }
-
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -122,13 +85,13 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
 
         if (getArguments() != null) {
             String groupName = getArguments().getString(KEY_GROUP_NAME);
-            trans = TranRepository.findAllByGroupName(mUIThreadNCMB, groupName);
+            trans = TranRepository.findAll(mUIThreadNCMB);
         } else {
-            tasks = TaskRepository.findAll(mUIThreadRealm);
+            trans = TranRepository.findAll(mUIThreadNCMB);
             showGroupName = true;
         }
 
-        mListsTranListAdapter = new ListsTranListAdapter(getActivity(), tasks, this, showGroupName);
+        mListsTranListAdapter = new ListsTranListAdapter(getActivity(), trans, this, showGroupName);
 
         RecyclerView recyclerView = findById(view, R.id.lists_recycler_view);
         recyclerView.addItemDecoration(
@@ -143,11 +106,11 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
 
     @Override
     public void onClickRecyclerItem(View v, int position) {
-        Task task = mListsTranListAdapter.getItem(position);
+        Tran tran = mListsTranListAdapter.getItem(position);
         AppCompatCheckedTextView taskNameText = (AppCompatCheckedTextView) v.findViewById(R.id.lists_task_name);
-        mListsTranListAdapter.changeTaskNameState(v, taskNameText, !task.isCompleted(), getResources());
+        mListsTranListAdapter.changeTaskNameState(v, taskNameText, true, getResources());
 
-        TaskRepository.updateByCompleted(mUIThreadRealm, task, !task.isCompleted());
+        TranRepository.update(tran);
     }
 
     @Override
@@ -160,7 +123,7 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
     public void onDestroy() {
         super.onDestroy();
         mListsTranListAdapter.release();
-        mUIThreadRealm.close();
+        mUIThreadNCMB.cancel();
     }
 
 }
