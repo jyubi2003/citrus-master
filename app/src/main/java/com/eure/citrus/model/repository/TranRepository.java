@@ -149,7 +149,8 @@ public class TranRepository {
         try {
             tmpList = query.find();
             for (NCMBObject obj: tmpList) {
-                ITEMS.add(new Tran((Tran)obj));
+                Tran tmpTran = new Tran(obj);
+                ITEMS.add(tmpTran);
             };
         } catch(Exception e){
             // 失敗したSnackBarとか出したいです。
