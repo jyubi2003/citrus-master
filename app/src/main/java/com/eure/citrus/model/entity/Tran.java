@@ -101,10 +101,13 @@ public class Tran{
      */
     @Override
     public String toString() {
+        return mApplication;
+        /*
         CharSequence source = toCharSequence();
         StringBuffer outString = new StringBuffer();
         outString.append(source);
         return outString.toString();
+        */
     }
 
     /**

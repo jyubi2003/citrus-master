@@ -90,16 +90,16 @@ public class ListsTranListAdapter extends RecyclerView.Adapter<ListsTranListAdap
      */
     public void changeTranNameState(View view, AppCompatCheckedTextView tranNameText, String aTranClass,
             Resources resources) {
-        tranNameText.setChecked(aTranClass == "支払い" ? true:false);
-        if (aTranClass == "支払い" ? true : false) {
+        tranNameText.setChecked(aTranClass.equalsIgnoreCase("支払い"));
+        if (aTranClass.equalsIgnoreCase("支払い")) {
             tranNameText.setTextColor(resources.getColor(android.R.color.holo_red_light));
-            view.setBackgroundColor(resources.getColor(R.color.mt_gray1));
-        } else if (aTranClass == "収入" ? true : false){
+            view.setBackgroundColor(resources.getColor(android.R.color.background_light));
+        } else if (aTranClass.equalsIgnoreCase("収入")){
             tranNameText.setTextColor(resources.getColor(android.R.color.holo_blue_light));
-            view.setBackgroundColor(resources.getColor(R.color.mt_gray1));
+            view.setBackgroundColor(resources.getColor(android.R.color.background_light));
         } else {
-            tranNameText.setTextColor(resources.getColor(android.R.color.holo_orange_light));
-            view.setBackgroundColor(resources.getColor(R.color.mt_gray1));
+            tranNameText.setTextColor(resources.getColor(android.R.color.holo_orange_dark));
+            view.setBackgroundColor(resources.getColor(android.R.color.background_light));
         }
     }
 

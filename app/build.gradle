@@ -39,5 +39,5 @@ dependencies {
     // compile 'io.realm:realm-android:0.81.2-SNAPSHOT'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
-    compile files('C:/GitHub/citrus-master/libraries/NCMB.jar')
+    compile files('C:\\Users\\Hiroshi\\Documents\\GitHub\\citrus-master\\libraries\\NCMB.jar')
 }
