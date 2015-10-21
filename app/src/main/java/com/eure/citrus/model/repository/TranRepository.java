@@ -8,7 +8,9 @@ import com.nifty.cloud.mb.NCMBException;
 import com.nifty.cloud.mb.NCMBObject;
 import com.nifty.cloud.mb.NCMBQuery;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,12 +48,14 @@ public class TranRepository {
      * @return Tran
      */
     public static Tran create() {
-        Tran tran = new Tran("TestCass");
+        NCMBObject tmpObj = new NCMBObject("TestClass");
+        Tran tran = new Tran();
         try {
-            tran.save();
+            tmpObj.save();
         } catch (Exception e){
             e.printStackTrace();
         }
+        tran.initBy(tmpObj);
         return tran;
     }
 
@@ -61,13 +65,30 @@ public class TranRepository {
      * @return Tran saved
      */
     public static Tran create(@NonNull Tran aTran) {
-        Tran tran = new Tran(aTran);
+        NCMBObject tmpObj = new NCMBObject("TestClass");
+
+        tmpObj.add("objectId", aTran.mobjectId);
+        tmpObj.add("TranDateTime", aTran.mTranDateTime);
+        tmpObj.add("TranClass", aTran.mTranClass);
+        tmpObj.add("CreditAccount", aTran.mCreditAccount);
+        tmpObj.add("DebitAccount", aTran.mDebitAccount);
+        tmpObj.add("Application", aTran.mApplication);
+        tmpObj.add("Customer", aTran.mCustomer);
+        tmpObj.add("Amount", aTran.mAmount);
+        tmpObj.add("Unit", aTran.mUnit);
+        tmpObj.add("Tax", aTran.mTax);
+        tmpObj.add("Remarks", aTran.mRemarks);
+        tmpObj.add("message", aTran.mmessage);
+        tmpObj.add("createDate", aTran.mcreateDate);
+        tmpObj.add("updateDate", aTran.mupdateDate);
+        tmpObj.add("acl", aTran.macl);
+
         try {
-            tran.save();
+            tmpObj.save();
         } catch (Exception e){
             e.printStackTrace();
         }
-        return tran;
+        return aTran;
     }
 
     /**
@@ -75,8 +96,10 @@ public class TranRepository {
      * @param aTran Tran object to delete.
      */
     public static void delete(Tran aTran) {
+        NCMBObject tmpObj = new NCMBObject("TeestClass");
+        tmpObj.add("objectId", aTran.mobjectId);
         try {
-            aTran.delete();
+            tmpObj.delete();
             // 成功したSnackBarとか出したいです。;
         } catch(Exception e){
             // 失敗したSnackBarとか出したいです。;
@@ -89,7 +112,25 @@ public class TranRepository {
      * @param aTran Tran to update.
      */
     public static void update(@NonNull Tran aTran) {
-        aTran.saveInBackground(new SaveCallback() {
+        NCMBObject tmpObj = new NCMBObject("TestClass");
+
+        tmpObj.add("objectId", aTran.mobjectId);
+        tmpObj.add("TranDateTime", aTran.mTranDateTime);
+        tmpObj.add("TranClass", aTran.mTranClass);
+        tmpObj.add("CreditAccount", aTran.mCreditAccount);
+        tmpObj.add("DebitAccount", aTran.mDebitAccount);
+        tmpObj.add("Application", aTran.mApplication);
+        tmpObj.add("Customer", aTran.mCustomer);
+        tmpObj.add("Amount", aTran.mAmount);
+        tmpObj.add("Unit", aTran.mUnit);
+        tmpObj.add("Tax", aTran.mTax);
+        tmpObj.add("Remarks", aTran.mRemarks);
+        tmpObj.add("message", aTran.mmessage);
+        tmpObj.add("createDate", aTran.mcreateDate);
+        tmpObj.add("updateDate", aTran.mupdateDate);
+        tmpObj.add("acl", aTran.macl);
+
+        tmpObj.saveInBackground(new SaveCallback() {
             @Override
             public void done(NCMBException e) {
                 if (e == null) {
@@ -149,7 +190,8 @@ public class TranRepository {
         try {
             tmpList = query.find();
             for (NCMBObject obj: tmpList) {
-                Tran tmpTran = new Tran(obj);
+                Tran tmpTran = new Tran();
+                tmpTran.initBy(obj);
                 ITEMS.add(tmpTran);
             };
         } catch(Exception e){
@@ -173,7 +215,10 @@ public class TranRepository {
                     ITEMS.clear();
                     if (!result.isEmpty()) {
                         for (NCMBObject obj: result) {
-                            ITEMS.add(new Tran((Tran)obj));
+                            // ITEMS.add(new Tran((Tran)obj));
+                            Tran tmpTran = new Tran();
+                            tmpTran.initBy(obj);
+                            ITEMS.add(tmpTran);
                         };
                     } else {
                         // このクラスのデータがないSnackBarとか出したいです。

@@ -107,8 +107,8 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
     @Override
     public void onClickRecyclerItem(View v, int position) {
         Tran tran = mListsTranListAdapter.getItem(position);
-        AppCompatCheckedTextView taskNameText = (AppCompatCheckedTextView) v.findViewById(R.id.lists_task_name);
-        mListsTranListAdapter.changeTaskNameState(v, taskNameText, true, getResources());
+        AppCompatCheckedTextView tranNameText = (AppCompatCheckedTextView) v.findViewById(R.id.lists_task_name);
+        mListsTranListAdapter.changeTranNameState(v, tranNameText, "収入", getResources());
 
         TranRepository.update(tran);
     }

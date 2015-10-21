@@ -64,18 +64,18 @@ public class ListsTranListAdapter extends RecyclerView.Adapter<ListsTranListAdap
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.item_lists_task_list, parent, false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.item_lists_tran_list, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Task task = mTasks.get(position);
-        holder.tranNameText.setChecked(task.isCompleted());
-        holder.tranNameText.setText(task.getName());
-        changeTaskNameState(holder.itemView, holder.tranNameText, task.isCompleted(), mContext.getResources());
-        holder.tranGroupText.setText(task.getGroupName());
+        Tran tran = mTrans.get(position);
+        holder.tranNameText.setChecked(true);
+        holder.tranNameText.setText(tran.mAmount.toString());
+        changeTranNameState(holder.itemView, holder.tranNameText, tran.mTranClass, mContext.getResources());
+        holder.tranGroupText.setText(tran.mApplication);
     }
 
     public Tran getItem(int position) { return mTrans.get(position); }
@@ -88,15 +88,18 @@ public class ListsTranListAdapter extends RecyclerView.Adapter<ListsTranListAdap
     /**
      * Change background color, text color
      */
-    public void changeTaskNameState(View view, AppCompatCheckedTextView taskNameText, boolean completed,
+    public void changeTranNameState(View view, AppCompatCheckedTextView tranNameText, String aTranClass,
             Resources resources) {
-        taskNameText.setChecked(completed);
-        if (completed) {
-            view.setBackgroundColor(resources.getColor(R.color.mt_gray5));
-            taskNameText.setTextColor(resources.getColor(R.color.mt_gray6));
+        tranNameText.setChecked(aTranClass == "支払い" ? true:false);
+        if (aTranClass == "支払い" ? true : false) {
+            tranNameText.setTextColor(resources.getColor(android.R.color.holo_red_light));
+            view.setBackgroundColor(resources.getColor(R.color.mt_gray1));
+        } else if (aTranClass == "収入" ? true : false){
+            tranNameText.setTextColor(resources.getColor(android.R.color.holo_blue_light));
+            view.setBackgroundColor(resources.getColor(R.color.mt_gray1));
         } else {
-            view.setBackgroundColor(resources.getColor(android.R.color.white));
-            taskNameText.setTextColor(resources.getColor(R.color.mt_black));
+            tranNameText.setTextColor(resources.getColor(android.R.color.holo_orange_light));
+            view.setBackgroundColor(resources.getColor(R.color.mt_gray1));
         }
     }
 
