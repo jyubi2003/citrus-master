@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.eure.citrus.model.entity.Tran;
 import com.nifty.cloud.mb.FindCallback;
+import com.nifty.cloud.mb.NCMBACL;
 import com.nifty.cloud.mb.NCMBException;
 import com.nifty.cloud.mb.NCMBObject;
 import com.nifty.cloud.mb.NCMBQuery;
@@ -114,21 +115,21 @@ public class TranRepository {
     public static void update(@NonNull Tran aTran) {
         NCMBObject tmpObj = new NCMBObject("TestClass");
 
-        tmpObj.add("objectId", aTran.mobjectId);
+        tmpObj.setObjectId(aTran.mobjectId);
         tmpObj.add("TranDateTime", aTran.mTranDateTime);
         tmpObj.add("TranClass", aTran.mTranClass);
         tmpObj.add("CreditAccount", aTran.mCreditAccount);
         tmpObj.add("DebitAccount", aTran.mDebitAccount);
         tmpObj.add("Application", aTran.mApplication);
         tmpObj.add("Customer", aTran.mCustomer);
-        tmpObj.add("Amount", aTran.mAmount);
+        tmpObj.add("Amount", aTran.mAmount.toString());
         tmpObj.add("Unit", aTran.mUnit);
         tmpObj.add("Tax", aTran.mTax);
         tmpObj.add("Remarks", aTran.mRemarks);
         tmpObj.add("message", aTran.mmessage);
-        tmpObj.add("createDate", aTran.mcreateDate);
-        tmpObj.add("updateDate", aTran.mupdateDate);
-        tmpObj.add("acl", aTran.macl);
+//        tmpObj.add("createDate", aTran.mcreateDate);
+//        tmpObj.add("updateDate", aTran.mupdateDate);
+        tmpObj.setACL(aTran.macl);
 
         tmpObj.saveInBackground(new SaveCallback() {
             @Override
@@ -185,6 +186,7 @@ public class TranRepository {
      * @return ITEMS
      */
     public static List<Tran> findAll(@NonNull NCMBQuery<NCMBObject> query) {
+        /*
         List<NCMBObject> tmpList;
         ITEMS.clear();
         try {
@@ -198,6 +200,32 @@ public class TranRepository {
             // 失敗したSnackBarとか出したいです。
             e.printStackTrace();
         }
+        return ITEMS;
+        */
+
+        query.findInBackground(new FindCallback<NCMBObject>() {
+            @Override
+            public void done(List<NCMBObject> result, NCMBException e) {
+                if (result != null) {
+                    ITEMS.clear();
+                    if (!result.isEmpty()) {
+                        for (NCMBObject obj: result) {
+                            // ITEMS.add(new Tran((Tran)obj));
+                            Tran tmpTran = new Tran();
+                            tmpTran.initBy(obj);
+                            ITEMS.add(tmpTran);
+                        };
+                    } else {
+                        // このクラスのデータがないSnackBarとか出したいです。
+                        ;
+                    }
+                } else {    /* result == null */
+                    // 失敗したSnackBarとか出したいです。
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return ITEMS;
     }
 

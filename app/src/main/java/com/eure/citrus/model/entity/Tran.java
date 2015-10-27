@@ -1,6 +1,7 @@
 package com.eure.citrus.model.entity;
 
 import com.nifty.cloud.mb.FindCallback;
+import com.nifty.cloud.mb.NCMBACL;
 import com.nifty.cloud.mb.NCMBObject;
 
 import java.math.BigDecimal;
@@ -30,7 +31,7 @@ public class Tran{
     public String mmessage;
     public Date mcreateDate;
     public Date mupdateDate;
-    public String macl;
+    public NCMBACL macl;
 
     /**
      * public Tran()
@@ -73,21 +74,21 @@ public class Tran{
      */
     public void initBy(NCMBObject anObj) {
         if (anObj.getClassName() == "TestClass") {
-            mobjectId = anObj.getString("objectId");
+            mobjectId = anObj.getObjectId();
             mTranDateTime = anObj.getDate("TranDateTime");
             mTranClass = anObj.getString("TranClass");
             mCreditAccount = anObj.getString("CreditAccount");
             mDebitAccount = anObj.getString("DebitAccount");
             mApplication = anObj.getString("Application");
             mCustomer = anObj.getString("Customer");
-            mAmount = new BigDecimal(anObj.getInt("Amount"));
+            mAmount = new BigDecimal(anObj.getString("Amount"));
             mUnit = anObj.getString("Unit");
             mTax = anObj.getString("Tax");
             mRemarks = anObj.getString("Remarks");
             mmessage = anObj.getString("message");
-            mcreateDate = anObj.getDate("createDate");
-            mupdateDate = anObj.getDate("updateDate");
-            macl = anObj.getString("acl");
+            mcreateDate = anObj.getCreatedAt();
+            mupdateDate = anObj.getUpdatedAt();
+            macl = anObj.getACL();
         } else {
             // どうやってエラー返そうかな
             ;

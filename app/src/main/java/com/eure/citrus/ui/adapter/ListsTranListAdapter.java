@@ -107,6 +107,11 @@ public class ListsTranListAdapter extends RecyclerView.Adapter<ListsTranListAdap
         sOnRecyclerItemClickListener = null;
     }
 
+
+
+
+
+
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.lists_tran_name)
