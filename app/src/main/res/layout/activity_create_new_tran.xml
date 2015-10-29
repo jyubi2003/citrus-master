@@ -23,10 +23,10 @@
             android:textColor="@color/mt_black"
             android:textSize="20sp"
             android:padding="16dp"
-            android:text="@string/create_new_description"
+            android:text="@string/create_new_tran_description"
             />
 
-    <FrameLayout
+    <LinearLayout
             android:layout_below="@+id/create_tran_description"
             android:layout_gravity="center"
             android:orientation="horizontal"
@@ -37,7 +37,7 @@
         <android.support.design.widget.TextInputLayout
                 android:layout_marginTop="32dp"
                 android:layout_gravity="top|center"
-                android:id="@+id/create_tran_text_input_layout"
+                android:id="@+id/create_tran_text_input_layout0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -49,11 +49,11 @@
                 >
 
             <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/create_tran_edit_text"
+                    android:id="@+id/create_tran_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/mt_black"
-                    android:hint="@string/tran_name"
+                    android:hint="@string/tran_date"
                     android:textSize="24sp"
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp"
@@ -61,7 +61,169 @@
 
         </android.support.design.widget.TextInputLayout>
 
-    </FrameLayout>
+        <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="32dp"
+                android:layout_gravity="top|center"
+                android:id="@+id/create_tran_text_input_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:padding="12dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/TextAppearence.App.ErrorTextInputLayout"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                >
+
+            <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/create_tran_goods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mt_black"
+                    android:hint="@string/tran_goods"
+                    android:textSize="24sp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="32dp"
+                android:layout_gravity="top|center"
+                android:id="@+id/create_tran_text_input_layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:padding="12dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/TextAppearence.App.ErrorTextInputLayout"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                >
+
+            <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/create_tran_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mt_black"
+                    android:hint="@string/tran_amount"
+                    android:textSize="24sp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="32dp"
+                android:layout_gravity="top|center"
+                android:id="@+id/create_tran_text_input_layout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:padding="12dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/TextAppearence.App.ErrorTextInputLayout"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                >
+
+            <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/create_tran_tax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mt_black"
+                    android:hint="@string/tran_tax"
+                    android:textSize="24sp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="32dp"
+                android:layout_gravity="top|center"
+                android:id="@+id/create_tran_text_input_layout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:padding="12dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/TextAppearence.App.ErrorTextInputLayout"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                >
+
+            <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/create_tran_bill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mt_black"
+                    android:hint="@string/tran_bill"
+                    android:textSize="24sp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="32dp"
+                android:layout_gravity="top|center"
+                android:id="@+id/create_tran_text_input_layout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:padding="12dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/TextAppearence.App.ErrorTextInputLayout"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                >
+
+            <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/create_tran_customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mt_black"
+                    android:hint="@string/tran_customer"
+                    android:textSize="24sp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="32dp"
+                android:layout_gravity="top|center"
+                android:id="@+id/create_tran_text_input_layout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:padding="12dp"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/TextAppearence.App.ErrorTextInputLayout"
+                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                >
+
+            <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/create_tran_application"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mt_black"
+                    android:hint="@string/tran_application"
+                    android:textSize="24sp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
 
 
     <android.support.design.widget.CoordinatorLayout

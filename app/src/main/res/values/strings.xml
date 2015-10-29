@@ -10,8 +10,15 @@
     <string name="eureka_address">sample@eure.com</string>
     <string name="create_new">Create New</string>
     <string name="create_new_description">Stack the to-do list to me.</string>
+    <string name="create_new_tran_description">Please input or edit transaction data.</string>
     <string name="task_name">Task name</string>
-    <string name="tran_name">Tran name</string>
+    <string name="tran_date">取引日付</string>
+    <string name="tran_goods">品　　名</string>
+    <string name="tran_amount">金　　額</string>
+    <string name="tran_tax">税　　額</string>
+    <string name="tran_bill">支払い方法</string>
+    <string name="tran_customer">購　入　先</string>
+    <string name="tran_application">適　　用</string>
     <string name="create">Create</string>
     <string name="create_successfully">You have created %1$s successfully.</string>
     <string name="complete_task">You have completed %1$s.</string>
