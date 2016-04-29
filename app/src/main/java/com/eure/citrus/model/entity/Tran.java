@@ -26,7 +26,7 @@ public class Tran{
     public String mCustomer;
     public BigDecimal mAmount;
     public String mUnit;
-    public String mTax;
+    public BigDecimal mTax;
     public String mRemarks;
     public String mmessage;
     public Date mcreateDate;
@@ -73,7 +73,7 @@ public class Tran{
      * description Copy Constructor
      */
     public void initBy(NCMBObject anObj) {
-        if (anObj.getClassName() == "TestClass") {
+        if (anObj.getClassName() == "Tran") {
             mobjectId = anObj.getObjectId();
             mTranDateTime = anObj.getDate("TranDateTime");
             mTranClass = anObj.getString("TranClass");
@@ -81,9 +81,9 @@ public class Tran{
             mDebitAccount = anObj.getString("DebitAccount");
             mApplication = anObj.getString("Application");
             mCustomer = anObj.getString("Customer");
-            mAmount = new BigDecimal(anObj.getString("Amount"));
+            mAmount = new BigDecimal(anObj.getInt("Amount"));
             mUnit = anObj.getString("Unit");
-            mTax = anObj.getString("Tax");
+            mTax = new BigDecimal(anObj.getInt("Tax"));
             mRemarks = anObj.getString("Remarks");
             mmessage = anObj.getString("message");
             mcreateDate = anObj.getCreatedAt();
@@ -123,7 +123,7 @@ public class Tran{
                 "<font color=#000000>" + mCreditAccount + " </font>" +
                 "<font color=#000000>" + mDebitAccount + " </font>" +
                 "<font color=#000000>&yen;" + mAmount.toString() + "円 </font>" +
-                "<font color=#000000>税 &yen;" + mTax + "円 </font><br>" +
+                "<font color=#000000>税 &yen;" + mTax.toString() + "円 </font><br>" +
                 "<font color=#000000>" + mApplication + " </font>" +
                 "<font color=#000000>" + mCustomer + "様 </font><br></p>");
         //CharSequence source = Html.fromHtml(html);

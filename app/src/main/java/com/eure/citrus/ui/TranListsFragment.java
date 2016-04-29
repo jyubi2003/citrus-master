@@ -65,7 +65,7 @@ public class TranListsFragment extends Fragment implements OnRecyclerItemClickLi
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mUIThreadNCMB =  NCMBQuery.getQuery("TestClass");
+        mUIThreadNCMB =  NCMBQuery.getQuery("Tran");
     }
 
 

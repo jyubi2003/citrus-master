@@ -66,7 +66,7 @@ public class TranRepository {
      * @return Tran saved
      */
     public static Tran create(@NonNull Tran aTran) {
-        NCMBObject tmpObj = new NCMBObject("TestClass");
+        NCMBObject tmpObj = new NCMBObject("TranClass");
 
         tmpObj.add("objectId", aTran.mobjectId);
         tmpObj.add("TranDateTime", aTran.mTranDateTime);
@@ -186,7 +186,6 @@ public class TranRepository {
      * @return ITEMS
      */
     public static List<Tran> findAll(@NonNull NCMBQuery<NCMBObject> query) {
-        /*
         List<NCMBObject> tmpList;
         ITEMS.clear();
         try {
@@ -200,8 +199,7 @@ public class TranRepository {
             // 失敗したSnackBarとか出したいです。
             e.printStackTrace();
         }
-        return ITEMS;
-        */
+//        return ITEMS;
 
         query.findInBackground(new FindCallback<NCMBObject>() {
             @Override

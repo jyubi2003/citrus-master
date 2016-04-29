@@ -48,8 +48,8 @@ public class Citrus extends Application {
 
     private void initNCMB() {
         NCMB.initialize(getApplicationContext(),
-                "2d2329a32f2b834527eb0d2a301032f2a27df4dd6814f95cb7e966a6f832020c",
-                "cbf48ac77f3edfff2319c4185d7def9e11aa62d38b6bd5c38570d114bf25afb9");
+                "7a5bde3c43ed896eea5ff46dad6b75a71666b4e6e77a60395988d4c304fa8ca6",
+                "746f9ab69d6cba3c792f391323581f8a097f0aaf95d31a14e67bebedcc385a16");
     }
 
 }
